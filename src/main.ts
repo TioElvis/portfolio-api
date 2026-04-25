@@ -20,8 +20,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.enableCors({
-    origin:
-      process.env.NODE_ENV === 'production' ? process.env.CORS_ORIGIN : true,
+    origin: process.env.ORIGIN,
     methods,
     credentials: true,
   });
