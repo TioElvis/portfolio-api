@@ -59,6 +59,12 @@ export class UserService {
     return { message: 'User found.', data: user };
   }
 
+  async findAll() {
+    const users = await this.userModel.find().exec();
+
+    return { message: 'Users found.', data: users };
+  }
+
   async deleteById(id: Types.ObjectId) {
     const { data: user } = await this.findById(id);
 

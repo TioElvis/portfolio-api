@@ -25,7 +25,12 @@ export class UserController {
 
   @Get('find-by-id/:id')
   async findById(@Param('id') id: Types.ObjectId) {
-    return await this.userService.findById(id, { password: 0 });
+    return await this.userService.findById(id);
+  }
+
+  @Get('find-all')
+  async findAll() {
+    return await this.userService.findAll();
   }
 
   @Delete('delete-by-id/:id')
