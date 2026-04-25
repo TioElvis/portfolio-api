@@ -22,7 +22,9 @@ export class UserService {
       .exec();
 
     if (existingUser) {
-      throw new BadRequestException('Username already exists.');
+      throw new BadRequestException(
+        'A user with that username already exists.',
+      );
     }
 
     try {
