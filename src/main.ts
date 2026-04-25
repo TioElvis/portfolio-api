@@ -8,15 +8,23 @@ import { ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from '@/modules/app.module';
 
+const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'];
+
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter(),
   );
 
-  await app.register(fastifyCookie, { secret: '' });
+  await app.register(fastifyCookie);
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.enableCors({
+    origin:
+      process.env.NODE_ENV === 'production' ? process.env.CORS_ORIGIN : true,
+    methods,
+    credentials: true,
+  });
 
   await app.listen(process.env.PORT ?? 9000, '0.0.0.0');
 }
