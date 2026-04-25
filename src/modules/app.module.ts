@@ -4,6 +4,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 
+import { UserModule } from './user/user.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
@@ -16,6 +18,7 @@ import { AppController } from './app.controller';
         };
       },
     }),
+    UserModule,
   ],
   controllers: [AppController],
 })
