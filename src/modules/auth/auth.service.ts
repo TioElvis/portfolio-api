@@ -22,6 +22,7 @@ export class AuthService {
   async signIn(body: SignInDto, response: FastifyReply) {
     const user = await this.userModel
       .findOne({ username: body.username })
+      .select({ password: 1 })
       .exec();
 
     if (!user || !(await compare(body.password, user.password))) {
