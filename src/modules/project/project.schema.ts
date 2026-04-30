@@ -45,4 +45,4 @@ export const ProjectSchema = SchemaFactory.createForClass(Project);
 
 ProjectSchema.index({ tags: 1 });
 ProjectSchema.index({ title: 1 });
-ProjectSchema.index({ languages: 1, tags: 1 });
+ProjectSchema.index({ languages: 1 });
