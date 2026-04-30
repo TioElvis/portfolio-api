@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 
 import { JWT_EXPIRES_IN } from '@/lib/constants';
+
+import { UserModule } from '@/modules/user/user.module';
 import { User, UserSchema } from '@/modules/user/user.schema';
 
 import { JwtStrategy } from './jwt.strategy';
@@ -24,6 +26,7 @@ import { AuthController } from './auth.controller';
         };
       },
     }),
+    UserModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
