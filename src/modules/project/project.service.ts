@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import type { Model } from 'mongoose';
+import { type Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { QueryProjectDto } from './dto/query-project.dto';
@@ -84,6 +84,20 @@ export class ProjectService {
 
   async findBySlug(slug: string) {
     const project = await this.projectModel.findOne({ slug }).exec();
+
+    if (!project) {
+      throw new NotFoundException('Project not found.');
+    }
+
+    return { message: 'Project found.', data: project };
+  }
+
+  async findById(id: Types.ObjectId) {
+    if (!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Invalid project ID.');
+    }
+
+    const project = await this.projectModel.findById(id).exec();
 
     if (!project) {
       throw new NotFoundException('Project not found.');
