@@ -92,7 +92,7 @@ export class ProjectService {
     return { message: 'Project found.', data: project };
   }
 
-  async findById(id: Types.ObjectId) {
+  async findById(id: Types.ObjectId | string) {
     if (!Types.ObjectId.isValid(id)) {
       throw new BadRequestException('Invalid project ID.');
     }
