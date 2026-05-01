@@ -20,4 +20,15 @@ export class SectionController {
   async findByProjectId(@Param('projectId') projectId: Types.ObjectId) {
     return this.sectionService.findByProjectId(projectId);
   }
+
+  @Get('find-by-project-slug-and-section-slug/:projectSlug/:sectionSlug')
+  async findByProjectSlugAndSectionSlug(
+    @Param('projectSlug') projectSlug: string,
+    @Param('sectionSlug') sectionSlug: string,
+  ) {
+    return await this.sectionService.findByProjectSlugAndSectionSlug(
+      projectSlug,
+      sectionSlug,
+    );
+  }
 }

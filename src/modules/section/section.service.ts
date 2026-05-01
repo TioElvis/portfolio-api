@@ -96,4 +96,29 @@ export class SectionService {
 
     return { message: 'Section found.', data: section };
   }
+
+  async findByProjectSlugAndSectionSlug(
+    projectSlug: string,
+    sectionSlug: string,
+  ) {
+    const project = await this.projectService.findBySlug(projectSlug);
+
+    const section = await this.sectionModel
+      .findOne({ slug: sectionSlug, project: project.data._id })
+      .exec();
+
+    if (!section) {
+      throw new NotFoundException('Section not found.');
+    }
+
+    if (section.parent) {
+      throw new NotFoundException(
+        'Section not found. Only top-level sections can be accessed by slug.',
+      );
+    }
+
+    // FIXME: Build a tree structure from the flat list of sections
+
+    return { message: 'Section found.', data: section };
+  }
 }
