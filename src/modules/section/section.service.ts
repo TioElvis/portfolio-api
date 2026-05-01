@@ -25,6 +25,12 @@ export class SectionService {
       this.projectService.findById(body.projectId),
     ]);
 
+    if (parent?.data.parent) {
+      throw new BadRequestException(
+        'Cannot create a section under a child section. Only two levels of nesting are allowed.',
+      );
+    }
+
     const existingSection = await this.sectionModel
       .findOne({
         slug: body.slug,
