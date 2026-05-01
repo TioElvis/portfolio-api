@@ -1,5 +1,13 @@
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 
 import { ProjectService } from './project.service';
 
@@ -19,5 +27,10 @@ export class ProjectController {
   @Get('find')
   async find(@Query() query: QueryProjectDto) {
     return await this.projectService.find(query);
+  }
+
+  @Get('find-by-slug/:slug')
+  async findBySlug(@Param('slug') slug: string) {
+    return await this.projectService.findBySlug(slug);
   }
 }

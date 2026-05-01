@@ -1,6 +1,10 @@
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import type { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { QueryProjectDto } from './dto/query-project.dto';
 import { CreateProjectDto } from './dto/create-project.dto';
@@ -76,5 +80,15 @@ export class ProjectService {
       console.error('Error finding projects:', error);
       throw new BadRequestException('Failed to find projects.');
     }
+  }
+
+  async findBySlug(slug: string) {
+    const project = await this.projectModel.findOne({ slug }).exec();
+
+    if (!project) {
+      throw new NotFoundException('Project not found.');
+    }
+
+    return { message: 'Project found.', data: project };
   }
 }
