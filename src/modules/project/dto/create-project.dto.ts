@@ -3,6 +3,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  Matches,
   MaxLength,
 } from 'class-validator';
 
@@ -23,6 +24,9 @@ export class CreateProjectDto {
   @IsNotEmpty()
   markdown: string;
 
+  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+    message: 'Slug must be lowercase, alphanumeric, and can contain hyphens',
+  })
   @MaxLength(32)
   @IsString()
   @IsNotEmpty()
