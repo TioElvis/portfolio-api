@@ -25,6 +25,16 @@ export class Section {
 
 export const SectionSchema = SchemaFactory.createForClass(Section);
 
+SectionSchema.pre(
+  'deleteOne',
+  { document: true, query: false },
+  async function () {
+    const sectionModel = this.model(Section.name);
+
+    await sectionModel.deleteMany({ project: this.project, parent: this._id });
+  },
+);
+
 SectionSchema.index({ slug: 1 });
 SectionSchema.index({ title: 1 });
 SectionSchema.index({ parent: 1 });

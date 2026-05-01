@@ -1,6 +1,14 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import type { Types } from 'mongoose';
 import { AuthGuard } from '@nestjs/passport';
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 
 import { CreateSectionDto } from './dto/create-section.dto';
 
@@ -30,5 +38,11 @@ export class SectionController {
       projectSlug,
       sectionSlug,
     );
+  }
+
+  @Delete('delete-by-id/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteById(@Param('id') id: Types.ObjectId) {
+    return this.sectionService.deleteById(id);
   }
 }

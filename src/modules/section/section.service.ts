@@ -121,4 +121,17 @@ export class SectionService {
 
     return { message: 'Section found.', data: section };
   }
+
+  async deleteById(id: Types.ObjectId) {
+    const section = await this.findById(id);
+
+    try {
+      await section.data.deleteOne();
+
+      return { message: 'Section deleted successfully.' };
+    } catch (error) {
+      console.error('Error deleting section:', error);
+      throw new BadRequestException('Failed to delete section.');
+    }
+  }
 }
