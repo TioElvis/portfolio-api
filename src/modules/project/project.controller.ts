@@ -1,12 +1,14 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
   Query,
   UseGuards,
 } from '@nestjs/common';
+import type { Types } from 'mongoose';
 import { AuthGuard } from '@nestjs/passport';
 
 import { ProjectService } from './project.service';
@@ -32,5 +34,11 @@ export class ProjectController {
   @Get('find-by-slug/:slug')
   async findBySlug(@Param('slug') slug: string) {
     return await this.projectService.findBySlug(slug);
+  }
+
+  @Delete('delete-by-id/:id')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteById(@Param('id') id: Types.ObjectId) {
+    return await this.projectService.deleteById(id);
   }
 }

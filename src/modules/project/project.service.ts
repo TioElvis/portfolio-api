@@ -105,4 +105,17 @@ export class ProjectService {
 
     return { message: 'Project found.', data: project };
   }
+
+  async deleteById(id: Types.ObjectId) {
+    const project = await this.findById(id);
+
+    try {
+      await project.data.deleteOne();
+
+      return { message: 'Project deleted successfully.' };
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      throw new BadRequestException('Failed to delete project.');
+    }
+  }
 }
