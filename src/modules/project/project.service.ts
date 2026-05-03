@@ -6,6 +6,8 @@ import {
 import { type Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
+import { GithubService } from '@/modules/github/github.service';
+
 import { QueryProjectDto } from './dto/query-project.dto';
 import { CreateProjectDto } from './dto/create-project.dto';
 
@@ -15,6 +17,7 @@ import { Project, ProjectDocument } from './project.schema';
 export class ProjectService {
   constructor(
     @InjectModel(Project.name) private projectModel: Model<ProjectDocument>,
+    private githubService: GithubService,
   ) {}
 
   async create(body: CreateProjectDto) {
@@ -26,10 +29,11 @@ export class ProjectService {
       throw new BadRequestException('Project with this slug already exists.');
     }
 
-    try {
-      const payload: Project = { ...body };
+    const repo = await this.githubService.findByName(body.title);
 
-      // FIXME: Before to create project check if the repositoryUrl is valid and accessible
+    try {
+      const payload: Project = { ...body, repositoryUrl: repo.data.html_url };
+
       const project = await this.projectModel.create(payload);
 
       return { message: 'Project created successfully.', data: project };

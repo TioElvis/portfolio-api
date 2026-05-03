@@ -41,10 +41,6 @@ export class CreateProjectDto {
   languages: Languages[];
 
   @IsString()
-  @IsNotEmpty()
-  repositoryUrl: string;
-
-  @IsString()
   @IsOptional()
   demoUrl?: string;
 }
