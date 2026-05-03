@@ -7,6 +7,7 @@ import { type Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { GithubService } from '@/modules/github/github.service';
+import { Section, SectionDocument } from '@/modules/section/section.schema';
 
 import { QueryProjectDto } from './dto/query-project.dto';
 import { CreateProjectDto } from './dto/create-project.dto';
@@ -17,6 +18,8 @@ import { Project, ProjectDocument } from './project.schema';
 export class ProjectService {
   constructor(
     @InjectModel(Project.name) private projectModel: Model<ProjectDocument>,
+    @InjectModel(Section.name) private sectionModel: Model<SectionDocument>,
+
     private githubService: GithubService,
   ) {}
 
@@ -111,10 +114,13 @@ export class ProjectService {
   }
 
   async deleteById(id: Types.ObjectId) {
-    const project = await this.findById(id);
+    const { data: project } = await this.findById(id);
 
     try {
-      await project.data.deleteOne();
+      await Promise.all([
+        this.sectionModel.deleteMany({ project: project._id }),
+        project.deleteOne(),
+      ]);
 
       return { message: 'Project deleted successfully.' };
     } catch (error) {
